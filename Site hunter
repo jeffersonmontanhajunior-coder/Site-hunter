@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SiteHunter — Encontre clientes. Feche vendas. Cresça.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #00e87a;
+    --green-dim: #00b85f;
+    --dark: #080b0f;
+    --card: #0f1318;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8edf3;
+    --muted: #6b7785;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── NOISE TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: rgba(8,11,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+  .logo span { color: var(--green); }
+
+  .nav-cta {
+    background: var(--green);
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: #fff; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,232,122,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,232,122,0.1);
+    border: 1px solid rgba(0,232,122,0.3);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .badge-dot {
+    width: 7px; height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse 1.5s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(64px, 10vw, 130px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: #fff;
+    animation: fadeUp 0.6s 0.1s ease both;
+    max-width: 900px;
+  }
+
+  h1 .accent { color: var(--green); }
+
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--muted);
+    max-width: 520px;
+    margin: 24px auto 0;
+    font-weight: 400;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  /* ─── WAITLIST FORM ─── */
+  .form-wrap {
+    display: flex;
+    gap: 10px;
+    margin-top: 40px;
+    animation: fadeUp 0.6s 0.3s ease both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .form-wrap input {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    width: 280px;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .form-wrap input::placeholder { color: var(--muted); }
+  .form-wrap input:focus { border-color: var(--green); }
+
+  .btn-primary {
+    background: var(--green);
+    color: #000;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,232,122,0.25); }
+
+  .hero-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 14px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 64px;
+    animation: fadeUp 0.6s 0.5s ease both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 42px;
+    color: #fff;
+    display: block;
+    line-height: 1;
+  }
+  .stat-num span { color: var(--green); }
+  .stat-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    padding: 100px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .section-sub {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* ─── PROBLEM ─── */
+  .problem { background: var(--dark); }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-top: 60px;
+  }
+
+  .problem-card {
+    background: var(--card);
+    padding: 40px;
+    transition: background 0.3s;
+  }
+  .problem-card:hover { background: #141920; }
+
+  .problem-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .problem-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .problem-text {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── HOW IT WORKS ─── */
+  .how { background: #090c10; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+    margin-top: 60px;
+  }
+
+  .step {
+    position: relative;
+    padding: 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .step:hover { border-color: rgba(0,232,122,0.3); transform: translateY(-4px); }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-size: 80px;
+    color: rgba(0,232,122,0.08);
+    line-height: 1;
+    position: absolute;
+    top: 16px;
+    right: 24px;
+  }
+
+  .step-icon {
+    width: 48px; height: 48px;
+    background: rgba(0,232,122,0.1);
+    border: 1px solid rgba(0,232,122,0.25);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .step-title {
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .step-text {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* ─── FEATURES ─── */
+  .features { background: var(--dark); }
+
+  .features-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 60px;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+    cursor: default;
+  }
+  .feature-item:hover {
+    background: var(--card);
+    border-color: var(--border);
+  }
+
+  .feature-check {
+    width: 28px; height: 28px;
+    background: rgba(0,232,122,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  .feature-title {
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .feature-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Fake UI mockup */
+  .mockup {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  }
+
+  .mockup-bar {
+    background: #0d1117;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #28ca41; }
+
+  .mockup-body { padding: 24px; }
+
+  .mock-search {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mock-map {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    height: 130px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mock-map::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 30px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 30px);
+  }
+
+  .map-pin {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: blink 2s ease infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .map-pin:nth-child(1) { top: 30%; left: 35%; animation-delay: 0s; }
+  .map-pin:nth-child(2) { top: 55%; left: 60%; animation-delay: 0.5s; }
+  .map-pin:nth-child(3) { top: 20%; left: 70%; animation-delay: 1s; }
+  .map-pin:nth-child(4) { top: 65%; left: 25%; animation-delay: 1.5s; background: rgba(0,232,122,0.4); }
+
+  .mock-label {
+    position: absolute;
+    top: 8px; left: 12px;
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .mock-results {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mock-result-item {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .mock-biz-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .mock-biz-cat {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .mock-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .mock-badge.no-site {
+    background: rgba(0,232,122,0.15);
+    color: var(--green);
+    border: 1px solid rgba(0,232,122,0.3);
+  }
+
+  /* ─── PRICING ─── */
+  .pricing { background: #090c10; }
+
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 60px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .plan {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .plan:hover { transform: translateY(-4px); }
+
+  .plan.featured {
+    border-color: var(--green);
+    background: linear-gradient(135deg, #0f1a13 0%, var(--card) 100%);
+  }
+
+  .plan-featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: #000;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 16px;
+    border-radius: 50px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .plan-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .plan-price {
+    font-family: var(--font-display);
+    font-size: 56px;
+    color: #fff;
+    line-height: 1;
+  }
+  .plan-price .currency { font-size: 24px; color: var(--muted); vertical-align: top; margin-top: 10px; display: inline-block; }
+  .plan-price .period { font-family: var(--font-body); font-size: 15px; color: var(--muted); font-weight: 400; }
+
+  .plan-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 16px 0 24px;
+    line-height: 1.6;
+  }
+
+  .plan-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 24px;
+  }
+
+  .plan-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .plan-items li {
+    font-size: 14px;
+    color: var(--text);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .plan-items li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  .plan-btn {
+    display: block;
+    text-align: center;
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    border: none;
+    font-family: var(--font-body);
+    width: 100%;
+  }
+  .plan-btn.outline {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .plan-btn.outline:hover { border-color: var(--green); color: var(--green); }
+  .plan-btn.solid {
+    background: var(--green);
+    color: #000;
+  }
+  .plan-btn.solid:hover { background: #fff; }
+
+  /* ─── CTA FINAL ─── */
+  .cta-final {
+    background: var(--dark);
+    text-align: center;
+  }
+
+  .cta-box {
+    background: linear-gradient(135deg, #0d1a12 0%, #0a1015 50%, #0d1a12 100%);
+    border: 1px solid rgba(0,232,122,0.2);
+    border-radius: 24px;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,232,122,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-box h2 {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 86px);
+    line-height: 1;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .cta-box p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── SUCCESS STATE ─── */
+  .success-msg {
+    display: none;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 15px;
+    margin-top: 16px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .features-layout { grid-template-columns: 1fr; }
+    .mockup { display: none; }
+    footer { flex-direction: column; text-align: center; }
+    .hero-stats { gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">SITE<span>HUNTER</span></div>
+  <a href="#waitlist" class="nav-cta">Entrar na lista</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Lançamento em breve — vagas limitadas
+  </div>
+
+  <h1>ENCONTRE.<br><span class="accent">FECHE.</span><br>CRESÇA.</h1>
+
+  <p class="hero-sub">
+    A primeira plataforma brasileira que mostra exatamente quais negócios perto de você ainda não têm site — e te dá tudo pra fechar a venda.
+  </p>
+
+  <div class="form-wrap" id="waitlist">
+    <input type="email" id="emailInput" placeholder="Seu melhor e-mail" autocomplete="email">
+    <button class="btn-primary" onclick="handleWaitlist()">Garantir minha vaga →</button>
+  </div>
+  <div class="success-msg" id="successMsg">✓ Incrível! Te avisamos quando abrir. Fique de olho no e-mail.</div>
+  <p class="hero-note">100% gratuito na fase beta. Sem cartão de crédito.</p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">+<span>7M</span></span>
+      <div class="stat-label">negócios no Brasil sem site</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num"><span>R$</span>0</span>
+      <div class="stat-label">pra começar a prospectar</div>
+    </div>
+    <div class="stat">
+      <span class="stat-num">3<span>x</span></span>
+      <div class="stat-label">mais clientes por semana</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <p class="section-label reveal">O problema</p>
+    <h2 class="section-title reveal">Freelancer bom que é bom<br>não falta. Cliente falta.</h2>
+    <p class="section-sub reveal">Você sabe criar sites, mas onde estão os clientes? Essa é a dor de 90% dos freelancers.</p>
+
+    <div class="problem-grid reveal">
+      <div class="problem-card">
+        <span class="problem-icon">😮‍💨</span>
+        <div class="problem-title">Horas buscando cliente no escuro</div>
+        <p class="problem-text">Você manda mensagem aleatória, manda proposta no ar, e fica esperando. Sem método. Sem direção.</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-icon">🗺️</span>
+        <div class="problem-title">Não sabe quem precisa de site</div>
+        <p class="problem-text">Tem negócio sem site na próxima rua. Você só não sabe qual é. Essa informação deveria ser óbvia.</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-icon">🤐</span>
+        <div class="problem-title">Na hora de vender, trava</div>
+        <p class="problem-text">Achou o cliente, mas não sabe o que falar, como abordar, como mandar uma proposta que convença.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <p class="section-label reveal">Como funciona</p>
+    <h2 class="section-title reveal">3 passos pra fechar<br>seu próximo cliente</h2>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <div class="step-icon">🗺️</div>
+        <div class="step-title">Encontre negócios sem site</div>
+        <p class="step-text">Digite sua cidade ou bairro. O mapa mostra negócios locais que ainda não têm presença digital — nome, telefone, categoria.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">02</div>
+        <div class="step-icon">🤖</div>
+        <div class="step-title">IA gera sua abordagem</div>
+        <p class="step-text">Selecione o negócio e receba na hora: mensagem de WhatsApp, e-mail personalizado e proposta em PDF pronta pra enviar.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-num">03</div>
+        <div class="step-icon">🚀</div>
+        <div class="step-title">Crie e entregue o site</div>
+        <p class="step-text">Feche o cliente e crie o site dentro da plataforma com IA. Entregue rápido, fature mais, repita o processo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <p class="section-label reveal">Funcionalidades</p>
+    <h2 class="section-title reveal">Tudo que você precisa<br>num só lugar</h2>
+
+    <div class="features-layout">
+      <div class="feature-list">
+        <div class="feature-item reveal">
+          <div class="feature-check">✓</div>
+          <div>
+            <div class="feature-title">Mapa de prospecção inteligente</div>
+            <div class="feature-desc">Veja em tempo real quais negócios da sua cidade não têm site. Filtre por categoria, bairro ou tamanho.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-check">✓</div>
+          <div>
+            <div class="feature-title">Kit de abordagem gerado por IA</div>
+            <div class="feature-desc">WhatsApp, e-mail e proposta personalizados para cada tipo de negócio. Só clicar e enviar.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-check">✓</div>
+          <div>
+            <div class="feature-title">CRM de acompanhamento</div>
+            <div class="feature-desc">Kanban simples pra você saber em que etapa está cada lead. Nunca mais perca uma oportunidade.</div>
+          </div>
+        </div>
+        <div class="feature-item reveal">
+          <div class="feature-check">✓</div>
+          <div>
+            <div class="feature-title">Criação de site com IA</div>
+            <div class="feature-desc">Feche o cliente e já crie o site dentro da plataforma. Tudo integrado, tudo no mesmo lugar.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOCKUP -->
+      <div class="mockup reveal">
+        <div class="mockup-bar">
+          <div class="dot dot-r"></div>
+          <div class="dot dot-y"></div>
+          <div class="dot dot-g"></div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-search">
+            🔍 &nbsp;Buscar negócios em... <strong style="color:#fff; margin-left:4px">São Paulo, SP</strong>
+          </div>
+          <div class="mock-map">
+            <div class="mock-label">4 oportunidades encontradas</div>
+            <div class="map-pin"></div>
+            <div class="map-pin"></div>
+            <div class="map-pin"></div>
+            <div class="map-pin"></div>
+          </div>
+          <div class="mock-results">
+            <div class="mock-result-item">
+              <div>
+                <div class="mock-biz-name">Barbearia do João</div>
+                <div class="mock-biz-cat">Barbearia · Pinheiros</div>
+              </div>
+              <div class="mock-badge no-site">Sem site</div>
+            </div>
+            <div class="mock-result-item">
+              <div>
+                <div class="mock-biz-name">Restaurante Sabor Brasil</div>
+                <div class="mock-biz-cat">Restaurante · Moema</div>
+              </div>
+              <div class="mock-badge no-site">Sem site</div>
+            </div>
+            <div class="mock-result-item">
+              <div>
+                <div class="mock-biz-name">Pet Shop Patinhas</div>
+                <div class="mock-biz-cat">Pet Shop · Vila Madalena</div>
+              </div>
+              <div class="mock-badge no-site">Sem site</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+  <div class="container" style="text-align:center">
+    <p class="section-label reveal">Planos</p>
+    <h2 class="section-title reveal">Simples e transparente</h2>
+    <p class="section-sub reveal" style="margin: 0 auto 0;">Começa de graça. Escala quando quiser.</p>
+
+    <div class="plans">
+      <div class="plan reveal">
+        <div class="plan-name">Grátis</div>
+        <div class="plan-price"><span class="currency">R$</span>0<span class="period">/mês</span></div>
+        <p class="plan-desc">Pra você testar e ver o valor antes de investir qualquer coisa.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-items">
+          <li>5 prospecções por mês</li>
+          <li>Mapa de oportunidades</li>
+          <li>1 kit de abordagem/mês</li>
+          <li>CRM básico</li>
+        </ul>
+        <button class="plan-btn outline" onclick="document.getElementById('emailInput').focus()">Começar grátis</button>
+      </div>
+
+      <div class="plan featured reveal">
+        <div class="plan-featured-badge">⚡ Mais popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><span class="currency">R$</span>97<span class="period">/mês</span></div>
+        <p class="plan-desc">Pra freelancer sério que quer cliente todo mês, sem esforço manual.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-items">
+          <li>Prospecções ilimitadas</li>
+          <li>Kits de abordagem ilimitados</li>
+          <li>Criação de site com IA</li>
+          <li>CRM completo</li>
+          <li>Suporte prioritário</li>
+        </ul>
+        <button class="plan-btn solid" onclick="document.getElementById('emailInput').focus()">Garantir vaga →</button>
+      </div>
+
+      <div class="plan reveal">
+        <div class="plan-name">Agência</div>
+        <div class="plan-price"><span class="currency">R$</span>297<span class="period">/mês</span></div>
+        <p class="plan-desc">Pra quem tem time e quer escalar a operação de vendas.</p>
+        <div class="plan-divider"></div>
+        <ul class="plan-items">
+          <li>Tudo do Pro</li>
+          <li>Até 5 usuários</li>
+          <li>Dashboard de equipe</li>
+          <li>Relatórios avançados</li>
+          <li>Onboarding dedicado</li>
+        </ul>
+        <button class="plan-btn outline" onclick="document.getElementById('emailInput').focus()">Falar com equipe</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-box reveal">
+      <h2>PRONTO PRA<br><span style="color:var(--green)">FECHAR MAIS?</span></h2>
+      <p>Entra na lista de espera agora e garante acesso antecipado com desconto de fundador.</p>
+      <div class="form-wrap" style="justify-content:center; margin-top:0">
+        <input type="email" id="emailInput2" placeholder="Seu melhor e-mail" autocomplete="email">
+        <button class="btn-primary" onclick="handleWaitlist2()">Quero minha vaga →</button>
+      </div>
+      <div class="success-msg" id="successMsg2" style="display:none">✓ Arrasou! Te avisamos no lançamento.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo" style="font-size:20px">SITE<span style="color:var(--green)">HUNTER</span></div>
+  <p>© 2026 SiteHunter. Feito no Brasil 🇧🇷</p>
+  <p style="font-size:12px">Desenvolvido por <strong style="color:var(--text)">Mountain Dev</strong></p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => obs.observe(el));
+
+  const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeAjWAzXb7gQT3gef5fbj-31xYgooiHJUOvswrSEKs4f42VHg/viewform';
+
+  function handleWaitlist() {
+    const email = document.getElementById('emailInput').value;
+    if (!email || !email.includes('@')) {
+      document.getElementById('emailInput').style.borderColor = '#ff5f57';
+      setTimeout(() => document.getElementById('emailInput').style.borderColor = '', 1500);
+      return;
+    }
+    document.querySelector('.form-wrap').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    setTimeout(() => window.open(FORM_URL, '_blank'), 800);
+  }
+
+  function handleWaitlist2() {
+    const email = document.getElementById('emailInput2').value;
+    if (!email || !email.includes('@')) {
+      document.getElementById('emailInput2').style.borderColor = '#ff5f57';
+      setTimeout(() => document.getElementById('emailInput2').style.borderColor = '', 1500);
+      return;
+    }
+    document.getElementById('emailInput2').closest('.form-wrap').style.display = 'none';
+    document.getElementById('successMsg2').style.display = 'block';
+    setTimeout(() => window.open(FORM_URL, '_blank'), 800);
+  }
+
+  // Botões dos planos também abrem o forms
+  document.querySelectorAll('.plan-btn').forEach(btn => {
+    btn.addEventListener('click', () => window.open(FORM_URL, '_blank'));
+  });
+
+  // Enter key
+  document.getElementById('emailInput').addEventListener('keydown', e => { if (e.key === 'Enter') handleWaitlist(); });
+  document.getElementById('emailInput2').addEventListener('keydown', e => { if (e.key === 'Enter') handleWaitlist2(); });
+</script>
+
+</body>
+</html>
